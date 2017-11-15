@@ -18,7 +18,10 @@ package com.vaadin.flow.demo.helloworld;
 import com.vaadin.flow.demo.helloworld.ExampleTemplate.ExampleModel;
 import com.vaadin.flow.model.TemplateModel;
 import com.vaadin.ui.Tag;
+import com.vaadin.ui.button.Button;
+import com.vaadin.ui.combobox.ComboBox;
 import com.vaadin.ui.common.HtmlImport;
+import com.vaadin.ui.polymertemplate.Id;
 import com.vaadin.ui.polymertemplate.PolymerTemplate;
 
 /**
@@ -28,20 +31,32 @@ import com.vaadin.ui.polymertemplate.PolymerTemplate;
 @HtmlImport("ExampleTemplate.html")
 public class ExampleTemplate extends PolymerTemplate<ExampleModel> {
 
-    /**
-     * Template model which defines the single "value" property.
-     */
-    public interface ExampleModel extends TemplateModel {
+	@Id("combo1")
+	private ComboBox<String> combo1;
 
-        void setValue(String value);
-    }
+	@Id("button1")
+	private Button button;
+	/**
+	 * Template model which defines the single "value" property.
+	 */
+	public interface ExampleModel extends TemplateModel {
 
-    public ExampleTemplate() {
-        // Set the initial value to the "value" property.
-        getModel().setValue("Not clicked");
-    }
+		void setValue(String value);
+	}
 
-    public void setValue(String value) {
-        getModel().setValue(value);
-    }
+	public ExampleTemplate() {
+		// Set the initial value to the "value" property.
+		getModel().setValue("Not clicked");
+		combo1.setItems("item 1", "item 2", "item 3");
+		combo1.setValue("item 2");
+		button.addClickListener(e -> {
+			combo1.setValue(combo1.getValue());
+		});
+		// This works.
+		// combo1.getElement().setAttribute("value", "item 2");
+	}
+
+	public void setValue(String value) {
+		getModel().setValue(value);
+	}
 }
